@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
         Died?.Invoke();
         _screen.ArmorButton.GetComponent<ArmorButton>().ArmorPressed -= OnArmorPressed;
         _screen.ArmorButton.GetComponent<ArmorButton>().ArmorUnpressed -= OnArmorUnpressed;
-        Destroy(gameObject, 0.85f);
+        Destroy(gameObject, ParamsController.DelayDeath);
     }
 
     private void ShowWinFx()

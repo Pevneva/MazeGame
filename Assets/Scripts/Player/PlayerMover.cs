@@ -50,7 +50,7 @@ public class PlayerMover : MonoBehaviour
 
     private void OnPlayerDied()
     {
-        StartCoroutine(StopPlayerMoving(0.35f));
+        StartCoroutine(StopPlayerMoving(ParamsController.DelayStopMoving));
     }
 
     private IEnumerator StopPlayerMoving(float delay)
@@ -61,7 +61,7 @@ public class PlayerMover : MonoBehaviour
     
     private void OnFinishReached()
     {
-        Invoke(nameof(StopMoving), 0.35f);
+        Invoke(nameof(StopMoving), ParamsController.DelayStopMoving);
     }
 
     private void StopMoving()

@@ -1,10 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class MazeGeneration : MonoBehaviour
 {
     [SerializeField] private PlayerMover _playerMoverTemplate;
+    [SerializeField] private GameObject _playerBeforeDeathTemplate;
     [SerializeField] private Wall _wallTemplate;
     [SerializeField] private DeathArea _deathAreaTemplate;
     [SerializeField] private Transform _tempLevelItemsContainer;
@@ -94,7 +96,24 @@ public class MazeGeneration : MonoBehaviour
     private void OnDied()
     {
         _playerMover.gameObject.GetComponent<Player>().Died -= OnDied;
+        Invoke(nameof(CreatePlayerBeforeDeath), ParamsController.DelayDeath);
         Invoke(nameof(SetupPlayer), 1);
+    }
+
+    private void CreatePlayerBeforeDeath()
+    {
+        var deathPlayer = Instantiate(_playerBeforeDeathTemplate, _playerStartPosition);
+        deathPlayer.transform.position = _playerMover.gameObject.transform.position;
+        
+        Debug.Log("AAA deathPlayer.transform.position : " + deathPlayer.transform.position);
+        foreach (var cube in deathPlayer.GetComponentsInChildren<Rigidbody>())
+        {
+            cube.GetComponent<Rigidbody>().isKinematic = false;
+            cube.GetComponent<Rigidbody>().AddExplosionForce(50, 
+                deathPlayer.transform.position + new Vector3(0, 4, -3f), 1F);
+        }
+        
+        Destroy(deathPlayer, 1.35f);
     }
 
     private IEnumerator WaitMovePlayer(float delay)

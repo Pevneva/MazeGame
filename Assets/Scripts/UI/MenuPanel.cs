@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,9 @@ public class MenuPanel : MonoBehaviour
         _continue.onClick.AddListener(OnContinueButtonClicked);
         _exit.onClick.AddListener(OnExitButtonClicked);
         _animation.updateMode = AnimatorUpdateMode.UnscaledTime;
-        _animation.Play("Fading");
+        // _animation.Play("Fading");
+        _image = GetComponent<Image>();
+        _image.DOFade(1, 2).SetUpdate(true);
     }
     
     private void OnDisable()
